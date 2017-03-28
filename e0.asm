@@ -76,13 +76,19 @@ time1:
         mov cx, N 
         mov bx, 0
 prep:   
-        mov edx, 0
-        movzx eax, info[bx+10]
-        lea edx, [eax*4+edx]
-        movzx eax, info[bx+11]
-        lea edx, [eax*2+edx]
-        movzx eax, info[bx+12]
-        lea eax, [eax*1+edx]
+        mov dx, 0
+        movzx ax, info[bx+10]
+        sal ax, 2
+        add dx, ax
+        ; lea edx, [eax*4+edx]
+        movzx ax, info[bx+11]
+        sal ax, 1
+        add dx, ax
+        ; lea edx, [eax*2+edx]
+        movzx ax, info[bx+12]
+        add dx, ax
+        mov ax, dx
+        ; lea eax, [eax*1+edx] 
         mov dl, 7
         div dl
         mov info[bx+13], al
@@ -168,3 +174,4 @@ exit:   mov ah, 4ch
         
 code    ends
 end     start
+
