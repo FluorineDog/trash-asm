@@ -77,21 +77,21 @@ time1:
         mov bx, 0
 prep:   
         mov dx, 0
-        movzx ax, info[bx+10]
-        sal ax, 2
-        add dx, ax
+        movzx ax, info[bx+10]   ; code to slow down the speed
+        sal ax, 2               ;
+        add dx, ax              ;
         ; lea edx, [eax*4+edx]
-        movzx ax, info[bx+11]
-        sal ax, 1
-        add dx, ax
+        movzx ax, info[bx+11]   ;
+        sal ax, 1               ;
+        add dx, ax              ;
         ; lea edx, [eax*2+edx]
-        movzx ax, info[bx+12]
-        add dx, ax
-        mov ax, dx
+        movzx ax, info[bx+12]   ;
+        add dx, ax              ;
+        mov ax, dx              ;
         ; lea eax, [eax*1+edx] 
-        mov dl, 7
-        div dl
-        mov info[bx+13], al
+        mov dl, 7               ;
+        div dl                  ;
+        mov info[bx+13], al     ;
         add bx, 14
         dec cx
         test cx,cx
