@@ -242,7 +242,7 @@ find:   mov ch, info[bx+di]
         jmp find
 miss:   
         dec bp
-        test bp, bp
+        ; test bp, bp   ; no need
         je fail
         add bx, 14
         mov di, 0
