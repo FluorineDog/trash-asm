@@ -229,12 +229,10 @@ initbg:
         call dspt       ;
         mov eax, NREP   ; init timer
 
-init:
         mov byte ptr in_name[bx], 0 ; set string tail = \0
         mov byte ptr in_name[bx+1], 0
         mov byte ptr in_name[bx+2], 0
-        
-
+init:
         mov bp, N
         lea bx, info
         lea di, in_name
@@ -244,7 +242,7 @@ init:
 find:   
         cmpsw
         jnz miss
-        cmp byte ptr[di], 0
+        cmp byte ptr[di-1], 0
         je succ
         jmp find
         ; mov ch, info[bx+di]
