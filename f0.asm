@@ -1,4 +1,17 @@
 .386
+
+clrf    macro 
+        push eax
+        push edx
+        mov ah, 2
+        mov dl,0ah
+        int 21h
+        mov dl,0dh
+        int 21h
+        pop edx
+        pop eax
+endm
+
 N equ 10
 NREP equ 0FFF0h   ; repeat for timing
 data    segment use16
@@ -120,7 +133,7 @@ divtble db 0, 0, 0, 0, 0, 0, 0
         db 99, 99, 99, 99, 99, 99, 99
         db 100
 msg2    db  'no such entry, please retry.', 0dh, 0ah, 0dh, 0ah, '$'
-msg3    db  0dh, 0ah, 'the grade is $'
+msg3    db  'the grade is $'
 
 
 data    ends
@@ -171,7 +184,7 @@ start:  mov ax, data
         mov ds, ax   
 
         call dspt       ; 
-        mov di, NREP    ; initialize timer
+        mov di, 1    ; initialize timer
 time1:
         mov cx, N 
         mov bx, 0
@@ -202,15 +215,16 @@ input:  mov dx, offset inmsg1
         mov dx, offset guard
         mov ah, 0ah
         int 21h
+        clrf
         mov bl, byte ptr guard+1
         movzx bx, bl
         cmp bx, 0
         je input
         cmp bx, 1
-        jne init
+        jne initbg
         cmp in_name, 'q'
         je exit
-
+initbg:
         call dspt       ;
         mov eax, NREP   ; init timer
 
@@ -234,12 +248,12 @@ miss:
         mov di, 0
         jmp find
 fail:
-        mov dx, offset msg2
 
         dec eax         ; extra loops
         jne init        ; 
         call dspt       ;
 
+        mov dx, offset msg2
         mov ah, 9
         int 21h
         jmp input
@@ -268,13 +282,8 @@ output:
         mov ah, 02h
         int 21h
 
-        mov dl, 0dh
-        mov ah, 02h
-        int 21h
-
-        mov dl, 0ah
-        mov ah, 02h
-        int 21h
+        clrf
+        clrf
         jmp input
        
 exit:   mov ah, 4ch
