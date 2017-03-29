@@ -12,7 +12,7 @@ clrf    macro
         pop eax
 endm
 
-N equ 10
+N equ 30
 NREP equ 0FFF0h   ; repeat for timing
 data    segment use16
 info    db  "why", 7 dup(0), 100, 85, 80, ?
@@ -22,7 +22,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         db  "good",6 dup(0), 76, 85, 80, ?
         db  "at",  8 dup(0), 77, 60, 80, ?
         db  "this",6 dup(0), 60, 85, 80, ?
-        db  N-8 dup("null",6 dup(0), 77, 85, 80, ?)
+        db  N-8 dup("nullinfo",6 dup(0), 77, 85, 80, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
 guard   db  10,?
 in_name db  12 dup (0)  ;add more space for calculating faster
@@ -226,12 +226,13 @@ input:  mov dx, offset inmsg1
         cmp in_name, 'q'
         je exit
 initbg:
-        call dspt       ;
-        mov eax, NREP   ; init timer
 
         mov byte ptr in_name[bx], 0 ; set string tail = \0
         mov byte ptr in_name[bx+1], 0
         mov byte ptr in_name[bx+2], 0
+
+        call dspt       ;
+        mov eax, NREP   ; init timer
 init:
         mov bp, N
         lea bx, info
@@ -259,7 +260,7 @@ miss:
         add bx, 14
         mov si, bx
         mov di, offset in_name
-        jmp find
+        jmp find        
         ; dec bp
         ; test bp, bp   ; no need
         ; je fail
