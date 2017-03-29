@@ -25,7 +25,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         db  N-8 dup("null",6 dup(0), 77, 85, 80, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
 guard   db  10,?
-in_name db  10 dup (0)
+in_name db  12 dup (0)  ;add more space for calculating faster
 pointer dw  ?
 inmsg1  db  'please enter the name of student to search:', 0dh, 0ah, '$'
 grade   db  'FFFFFFDCBAA'
@@ -182,6 +182,7 @@ dspt    endp
 
 start:  mov ax, data
         mov ds, ax   
+        mov es, ax              ; new code: set es to data
 
         call dspt       ; 
         mov di, 1    ; initialize timer
@@ -230,25 +231,44 @@ initbg:
 
 init:
         mov byte ptr in_name[bx], 0 ; set string tail = \0
+        mov byte ptr in_name[bx+1], 0
+        mov byte ptr in_name[bx+2], 0
+        
+
         mov bp, N
-        mov bx, 0
-        mov di, 0
-find:   mov ch, info[bx+di]
-        cmp ch, in_name[di]
-        jne miss
-        test ch, ch
-        jz succ
-        inc di
+        lea bx, info
+        lea di, in_name
+        mov si, bx
+        ; mov bx, 0
+        ; mov di, 0
+find:   
+        cmpsw
+        jnz miss
+        cmp byte ptr[di], 0
+        je succ
         jmp find
-miss:   
+        ; mov ch, info[bx+di]
+        ; cmp ch, in_name[di]
+
+        ; jne miss
+        ; test ch, ch
+        ; jz succ
+        ; inc di
+        ; jmp find
+miss:  
         dec bp
-        ; test bp, bp   ; no need
         je fail
         add bx, 14
-        mov di, 0
+        mov si, bx
+        mov di, offset in_name
         jmp find
+        ; dec bp
+        ; test bp, bp   ; no need
+        ; je fail
+        ; add bx, 14
+        ; mov di, 0
+        ; jmp find
 fail:
-
         dec eax         ; extra loops
         jne init        ; 
         call dspt       ;
@@ -264,7 +284,7 @@ succ:
         jne init        ; 
         call dspt       ;
 
-        lea ax, info[bx]
+        mov ax, bx
         mov pointer, ax
 
 output:
@@ -291,5 +311,3 @@ exit:   mov ah, 4ch
         
 code    ends
 end     start
-
-
