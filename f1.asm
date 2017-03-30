@@ -22,7 +22,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         db  "good",6 dup(0), 76, 85, 80, ?
         db  "at",  8 dup(0), 77, 60, 80, ?
         db  "this",6 dup(0), 60, 85, 80, ?
-        db  N-8 dup("nullinfo",6 dup(0), 77, 85, 80, ?)
+        db  N-8 dup("nullinfo",2 dup(0), 77, 85, 80, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
 guard   db  10,?
 in_name db  12 dup (0)  ;add more space for calculating faster
@@ -241,7 +241,7 @@ init:
         ; mov bx, 0
         ; mov di, 0
 find:   
-        cmpsw
+        cmpsb
         jnz miss
         cmp byte ptr[di-1], 0
         je succ

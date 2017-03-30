@@ -12,7 +12,7 @@ clrf    macro
         pop eax
 endm
 
-N equ 10
+N equ 30
 NREP equ 0FFF0h   ; repeat for timing
 data    segment use16
 info    db  "why", 7 dup(0), 100, 85, 80, ?
@@ -22,7 +22,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         db  "good",6 dup(0), 76, 85, 80, ?
         db  "at",  8 dup(0), 77, 60, 80, ?
         db  "this",6 dup(0), 60, 85, 80, ?
-        db  N-8 dup("null",6 dup(0), 77, 85, 80, ?)
+        db  N-8 dup("nullinfo", 2 dup(0), 77, 85, 80, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
 guard   db  10,?
 in_name db  10 dup (0)
@@ -184,7 +184,7 @@ start:  mov ax, data
         mov ds, ax   
 
         call dspt       ; 
-        mov di, 1    ; initialize timer
+        mov di, 1       ; initialize timer
 time1:
         mov cx, N 
         mov bx, 0
