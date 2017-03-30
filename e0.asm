@@ -69,11 +69,10 @@ dspt    endp
 start:  mov ax, data
         mov ds, ax   
 
-        call dspt 
-
-        mov di, NREP ; set di to repeat time
+        call dspt       ; initialize timer loop
+        mov di, NREP    ; 
 time1:
-        mov cx, N 
+        mov cx, N
         mov bx, 0
 prep:   
         mov edx, 0
@@ -91,9 +90,9 @@ prep:
         test cx,cx
         jne prep
         
-        dec di
-        jnz time1
-        call dspt 
+        dec di          ; repeating
+        jnz time1       ;
+        call dspt       ;
 
 input:  mov dx, offset inmsg1
         mov ah, 9
