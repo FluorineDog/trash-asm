@@ -3,10 +3,12 @@
 	endm
 	endif
 	?debug	S "g0.c"
+
 _TEXT	segment	byte public 'CODE'
 DGROUP	group	_DATA,_BSS
 	assume	cs:_TEXT,ds:DGROUP,ss:DGROUP
 _TEXT	ends
+
 _DATA	segment word public 'DATA'
 d@	label	byte
 d@w	label	word
@@ -21,6 +23,7 @@ b@w	label	word
 _BSS	ends
 _DATA	segment word public 'DATA'
 _DATA	ends
+
 _TEXT	segment	byte public 'CODE'
 ;	?debug	L 3
 _main	proc	near

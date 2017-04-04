@@ -185,7 +185,7 @@ start:  mov ax, data
         mov es, ax              ; new code: set es to data
 
         call dspt       ; 
-        mov di, 1    ; initialize timer
+        mov di, NREP    ; initialize timer
 time1:
         mov cx, N 
         mov bx, 0
@@ -241,7 +241,7 @@ init:
         ; mov bx, 0
         ; mov di, 0
 find:   
-        cmpsb
+        cmpsw
         jnz miss
         cmp byte ptr[di-1], 0
         je succ
