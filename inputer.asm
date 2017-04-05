@@ -1,6 +1,7 @@
         name inputer
         public inputer
 .386
+include basis.inc
 stack   segment use16
 db      200 dup(0)
 stack   ends
@@ -19,40 +20,9 @@ msg2    db "input the second grade$"
 msg3    db "input the third grade$"
 dataM    ends
 
-clrf    macro
-        push ax
-        push dx
-        mov ah, 02h
-        mov dl, 0dh
-        int 21h
-        mov dl, 0ah
-        int 21h
-        pop dx
-        pop ax
-        endm
-
-
-prints  macro message
-        push ax
-        push dx
-        mov dx, offset message
-        mov ah, 09h
-        int 21h
-        clrf
-        pop dx
-        pop ax
-        endm 
-
 scanfs  macro 
-        push ax
-        push dx
-        mov dx, offset guard
-        mov ah, 0ah
-        int 21h
-        clrf
-        pop dx
-        pop ax
-endm 
+        scanfs_ guard
+        endm 
 
 push2di  macro
         push di
@@ -61,14 +31,13 @@ push2di  macro
         movzx cx, byte ptr guard+1
         mov si, offset inbuf
         ; mov di, di
-        ; ds, es is set
+        ; ds, es has been set
         rep movsb
         mov byte ptr es:[di], 0
         pop cx
         pop si
         pop di
 endm
-
 
 code    segment use16
                 assume cs:code, ds:dataM, ss:stack
@@ -98,53 +67,41 @@ radixEnd:
 radix   endp
 
 inputer proc far
-; 
+; buf address in di
         mov ax, ds
         push ax
         mov ax, dataM
         mov ds, ax
-        ; buf addressein es:di
+        ; buf address in es:di
         push di
-        ; push si
-        ; push cx
 
-        ; mov cx, si
-; inputerLoop:
-        ; test cx, cx
-        ; jz inputerEnd
-        prints msg00
+        prints msg00    ; input rank
         call radix
-
         dec ax
         sal ax, 4
         add di, ax
 
-        prints msg01
+        prints msg01    ; input name
         scanfs 
         ; mov di, di
         push2di
-        prints msg1
+
+        prints msg1     ; input grades * 3
         call radix
         mov es:[di+10], al
         
-        prints msg2
+        prints msg2     ;
         call radix
         mov es:[di+11], al
 
-        prints msg3
+        prints msg3     ;
         call radix
         mov es:[di+12], al
 
-        ; add di, 16
-        ; dec cx
-        ; jmp inputerLoop
-; inputerEnd:
-        ; pop cx
-        ; pop si
-        pop di
+        pop di          ; restore
         pop ax
         mov ds, ax
-        xor ax, ax
+        xor ax, ax      ; return void
         ret 
 inputer endp
 code    ends
