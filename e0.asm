@@ -44,7 +44,7 @@ start:
         mov ax, data
         mov ds, ax   
         mov es, ax
-        mov si, 5               ; new code
+        ; mov si, 5               ; new code
         mov di, offset info
 
         call inputer 

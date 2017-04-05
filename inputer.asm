@@ -98,13 +98,14 @@ radixEnd:
 radix   endp
 
 inputer proc far
+; 
         mov ax, ds
         push ax
         mov ax, dataM
         mov ds, ax
         ; buf addressein es:di
         push di
-        push si
+        ; push si
         ; push cx
 
         ; mov cx, si
@@ -114,9 +115,9 @@ inputer proc far
         prints msg00
         call radix
 
-        dec eax
-        sar eax, 4
-        add edi, eax
+        dec ax
+        sal ax, 4
+        add di, ax
 
         prints msg01
         scanfs 
@@ -126,11 +127,11 @@ inputer proc far
         call radix
         mov es:[di+10], al
         
-        prints msg1
+        prints msg2
         call radix
         mov es:[di+11], al
 
-        prints msg1
+        prints msg3
         call radix
         mov es:[di+12], al
 
@@ -139,7 +140,7 @@ inputer proc far
         ; jmp inputerLoop
 ; inputerEnd:
         ; pop cx
-        pop si
+        ; pop si
         pop di
         pop ax
         mov ds, ax
