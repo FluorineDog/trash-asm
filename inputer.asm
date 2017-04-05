@@ -12,7 +12,8 @@ dataM    segment use16
 newline db 0dh, 0ah, '$'
 guard   db 10,0
 inbuf   db 12 dup (0)
-msg0    db "input your message $"
+msg00   db "input rank of student$"
+msg01   db "input name$"
 msg1    db "input the first grade$"
 msg2    db "input the second grade$"
 msg3    db "input the third grade$"
@@ -55,11 +56,16 @@ endm
 
 push2di  macro
         push di
+        push si
+        push cx
         movzx cx, byte ptr guard+1
         mov si, offset inbuf
         ; mov di, di
         ; ds, es is set
         rep movsb
+        mov byte ptr es:[di], 0
+        pop cx
+        pop si
         pop di
 endm
 
@@ -72,12 +78,12 @@ radix   proc
         push edx
         scanfs
         mov edx, 0
-        mov cl, guard+1
-        movzx si, byte ptr inbuf
+        movzx cx, guard+1
+        mov si, offset inbuf
 radixLoop:
-        test cl, cl
+        test cx, cx
         jz radixEnd
-        dec cl
+        dec cx
         lodsb
         and eax, 0Fh
         lea edx, [edx*4+edx]
@@ -96,37 +102,44 @@ inputer proc far
         push ax
         mov ax, dataM
         mov ds, ax
-        ; buf address in es:di, number in si
+        ; buf addressein es:di
         push di
         push si
-        push cx
-        mov cx, si
+        ; push cx
 
-inputerLoop:
-        test cx, cx
+        ; mov cx, si
+; inputerLoop:
+        ; test cx, cx
         ; jz inputerEnd
-        prints msg0
-        
+        prints msg00
         scanfs 
+        call radix
+
+        dec eax
+        sar eax, 4
+        add edi, eax
+
+        prints msg01
+        scanfs 
+        ; mov di, di
         push2di
-        
         prints msg1
         call radix
         mov es:[di+10], al
         
-        ; prints msg1
-        ; call radix
-        ; mov es:[di+11], al
+        prints msg1
+        call radix
+        mov es:[di+11], al
 
-        ; prints msg1
-        ; call radix
-        ; mov es:[di+12], al
+        prints msg1
+        call radix
+        mov es:[di+12], al
 
-        add di, 16
-        dec cx
-        jmp inputerLoop
-inputerEnd:
-        pop cx
+        ; add di, 16
+        ; dec cx
+        ; jmp inputerLoop
+; inputerEnd:
+        ; pop cx
         pop si
         pop di
         pop ax

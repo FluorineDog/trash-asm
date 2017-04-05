@@ -17,8 +17,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         dw  ?
         db  "this",6 dup(0), 60, 85, 80, ?
         dw  ?
-        db  N-8 dup("null",6 dup(0), 77, 85, 80, ?)
-        dw  ?
+        db  N-8 dup("null",6 dup(0), 77, 85, 80, ?, ?, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
         dw  ?
 guard   db  10,?
@@ -100,7 +99,7 @@ miss:
         dec bp
         test bp, bp
         je fail
-        add bx, 14
+        add bx, 16
         mov di, 0
         jmp find
 fail:
