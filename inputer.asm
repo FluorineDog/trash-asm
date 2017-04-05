@@ -112,7 +112,6 @@ inputer proc far
         ; test cx, cx
         ; jz inputerEnd
         prints msg00
-        scanfs 
         call radix
 
         dec eax
