@@ -1,5 +1,5 @@
         name    e0
-        extrn   inputer:far
+        extrn   inputer:far, calcavg:far
 .386
 N equ 10
 data    segment use16
@@ -49,26 +49,32 @@ start:
 
         call inputer 
 
-        mov cx, N 
-        mov bx, 0
+        ; mov cx, N 
+        ; mov bx, 0
         
-prep:  
-        mov edx, 0
-        movzx eax, info[bx+10]
-        lea edx, [eax*4+edx]
-        movzx eax, info[bx+11]
-        lea edx, [eax*2+edx]
-        movzx eax, info[bx+12]
-        lea eax, [eax*1+edx]
-        mov dl, 7
-        div dl
-        mov info[bx+13], al
-        add bx, 16
-        dec cx
-        test cx,cx
-        jne prep
+prep:   
+        mov si, N
+        lea di, info
+        ; mov ax, seg info
+        ; mov es, ax
+        ; call calcavg
+        ; mov edx, 0
+        ; movzx eax, info[bx+10]
+        ; lea edx, [eax*4+edx]
+        ; movzx eax, info[bx+11]
+        ; lea edx, [eax*2+edx]
+        ; movzx eax, info[bx+12]
+        ; lea eax, [eax*1+edx]
+        ; mov dl, 7
+        ; div dl
+        ; mov info[bx+13], al
+        ; add bx, 16
+        ; dec cx
+        ; test cx,cx
+        ; jne prep
 
-input:  mov dx, offset inmsg1
+input:  
+        mov dx, offset inmsg1
         mov ah, 9
         int 21h
         mov dx, offset guard
@@ -88,7 +94,8 @@ init:
         mov bp, N
         mov bx, 0
         mov di, 0
-find:   mov ch, info[bx+di]
+find:   
+        mov ch, info[bx+di]
         cmp ch, in_name[di]
         jne miss
         test ch, ch

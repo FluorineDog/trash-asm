@@ -53,10 +53,10 @@ radixLoop:
         test cx, cx
         jz radixEnd
         dec cx
-        lodsb
+        lodsb   ;load [si] to al
         and eax, 0Fh
         lea edx, [edx*4+edx]
-        lea edx, [edx*2+eax]
+        lea edx, [edx*2+eax]    ; edx*10+eax
         jmp radixLoop
 radixEnd:
         mov eax, edx
@@ -68,8 +68,9 @@ radix   endp
 
 inputer proc far
 ; buf address in di
-        mov ax, ds
-        push ax
+        ; mov ax, ds
+        ; push ax
+        push ds
         mov ax, dataM
         mov ds, ax
         ; buf address in es:di
@@ -86,21 +87,22 @@ inputer proc far
         ; mov di, di
         push2di
 
-        prints msg1     ; input grades * 3
+        prints msg1     ; input grades *1
         call radix
         mov es:[di+10], al
         
-        prints msg2     ;
+        prints msg2     ;              *2
         call radix
         mov es:[di+11], al
 
-        prints msg3     ;
+        prints msg3     ;              *3
         call radix
         mov es:[di+12], al
 
         pop di          ; restore
-        pop ax
-        mov ds, ax
+        ; pop ax
+        ; mov ds, ax
+        pop ds
         xor ax, ax      ; return void
         ret 
 inputer endp
