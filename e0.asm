@@ -55,9 +55,9 @@ start:
 prep:   
         mov si, N
         lea di, info
+        call calcavg
         ; mov ax, seg info
         ; mov es, ax
-        ; call calcavg
         ; mov edx, 0
         ; movzx eax, info[bx+10]
         ; lea edx, [eax*4+edx]
