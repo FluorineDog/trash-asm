@@ -44,34 +44,13 @@ start:
         mov ax, data
         mov ds, ax   
         mov es, ax
-        ; mov si, 5               ; new code
         mov di, offset info
 
         call inputer 
-
-        ; mov cx, N 
-        ; mov bx, 0
-        
 prep:   
         mov si, N
         lea di, info
         call calcavg
-        ; mov ax, seg info
-        ; mov es, ax
-        ; mov edx, 0
-        ; movzx eax, info[bx+10]
-        ; lea edx, [eax*4+edx]
-        ; movzx eax, info[bx+11]
-        ; lea edx, [eax*2+edx]
-        ; movzx eax, info[bx+12]
-        ; lea eax, [eax*1+edx]
-        ; mov dl, 7
-        ; div dl
-        ; mov info[bx+13], al
-        ; add bx, 16
-        ; dec cx
-        ; test cx,cx
-        ; jne prep
 
 input:  
         mov dx, offset inmsg1
