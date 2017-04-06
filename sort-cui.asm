@@ -54,7 +54,7 @@ wr:     cmp ecx,offset sorv+2*n
         add dl,bh
         inc dl
         mov bh,0
-        mov 6[ebp],dl
+        movzx word ptr 6[ebp],dl
         add ecx,2
         jmp wr
 plu:    mov 6[ebp],dl
