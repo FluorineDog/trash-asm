@@ -1,8 +1,9 @@
         name    e0
-        extrn   inputer:far, calcavg:far
+        extrn   inputer:far, calcavg:far, sort:near
+        public  N, sorv
 .386
 N equ 10
-data    segment use16
+data    segment use16 public 'dat'
 info    db  "why", 7 dup(0), 100, 85, 80, ?
         dw  ?
         db  "are", 7 dup(0), 95, 85, 80, ?
@@ -20,6 +21,7 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         db  N-8 dup("null",6 dup(0), 77, 85, 80, ?, ?, ?)
         db  "gouguilin",1 dup(0), 100, 85, 80, ?
         dw  ?
+sorv    dw  10 dup(0)
 guard   db  10,?
 in_name db  10 dup (0)
 pointer dw  ?
@@ -37,10 +39,9 @@ stack   segment use16 stack
         db 200 dup (?)
 stack   ends
 
-code    segment use16
+code    segment public use16 'code'
                 assume cs:code, ds:data, ss:stack, es:data
 start:  
-        
         mov ax, data
         mov ds, ax   
         mov es, ax
@@ -51,6 +52,20 @@ prep:
         mov si, N
         lea di, info
         call calcavg
+
+        ; push si
+        ; push di
+        mov si, offset info
+        mov di, offset sorv
+lint:
+        mov [di], si
+        add si, 16
+        add di, 2
+        cmp di, offset sorv + 2*N
+        jne lint
+        ; call sort
+        ; pop di
+        ; pop si
 
 input:  
         mov dx, offset inmsg1
