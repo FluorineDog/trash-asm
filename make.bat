@@ -1,1 +1,1 @@
-ml e0.asm inputer.asm calcavg.asm sort.asm
+ml e0.asm inputer.asm calcavg.asm sort.asm print.asm

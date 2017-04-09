@@ -1,6 +1,6 @@
         name    e0
-        extrn   inputer:far, calcavg:far, sort:near
-        public  N, sorv
+        extrn   inputer:far, calcavg:far, sort:near, print:near
+        public  N, sorv, info
 .386
 N equ 10
 data    segment use16 public 'dat'
@@ -64,6 +64,7 @@ lint:
         cmp di, offset sorv + 2*N
         jne lint
         call sort
+        call print
         ; pop di
         ; pop si
 

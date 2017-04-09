@@ -24,7 +24,7 @@ scanfs  macro
         scanfs_ guard
         endm 
 
-push2di  macro
+push2di macro
         push di
         push si
         push cx
@@ -76,26 +76,26 @@ inputer proc far
         ; buf address in es:di
         push di
 
-        prints msg00    ; input rank
+        puts msg00    ; input rank
         call radix
         dec ax
         sal ax, 4
         add di, ax
 
-        prints msg01    ; input name
+        puts msg01    ; input name
         scanfs 
         ; mov di, di
         push2di
 
-        prints msg1     ; input grades *1
+        puts msg1     ; input grades *1
         call radix
         mov es:[di+10], al
         
-        prints msg2     ;              *2
+        puts msg2     ;              *2
         call radix
         mov es:[di+11], al
 
-        prints msg3     ;              *3
+        puts msg3     ;              *3
         call radix
         mov es:[di+12], al
 
