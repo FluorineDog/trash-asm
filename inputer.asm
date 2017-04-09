@@ -67,7 +67,7 @@ radixEnd:
 radix   endp
 
 inputer proc far
-; buf address in di
+; buf address in es:di
         ; mov ax, ds
         ; push ax
         push ds
