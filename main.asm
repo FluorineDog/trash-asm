@@ -54,12 +54,21 @@ start:
         mov ds, ax   
         mov es, ax
         mov di, offset info
-        prints msg4
         ; call inputer 
+
+        mov si, offset info
+        mov di, offset sorv
+lint:
+        mov [di], si
+        add si, 16
+        add di, 2
+        cmp di, offset sorv + 2*N
+        jne lint
+ 
 prep:   
+        prints msg4
         mov si, N
         lea di, info
-        call calcavg
         scanfs_ inGuard
         lea di, info
         mov si, N
@@ -100,16 +109,7 @@ jmpTable:
 
         ; push si
         ; push di
-        mov si, offset info
-        mov di, offset sorv
-lint:
-        mov [di], si
-        add si, 16
-        add di, 2
-        cmp di, offset sorv + 2*N
-        jne lint
-        call sort
-        ; call print
+       ; call print
         ; pop di
         ; pop si
 
