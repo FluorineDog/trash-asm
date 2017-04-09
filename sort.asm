@@ -4,7 +4,7 @@
 stack segment para use16 public 'stack'
     db 200 dup(0)
 stack ends
-N2 equ N+N
+
 data segment para use16 public 'dat'
 data ends
 
