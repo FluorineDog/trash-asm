@@ -4,52 +4,56 @@
 stack segment para use16 public 'stack'
     db 200 dup(0)
 stack ends
-
+N2 equ N+N
 data segment para use16 public 'dat'
 data ends
 
 
 
-code segment public para use16 'code' 
+code    segment use16 public para 'code' 
     assume cs:code, ss:stack, ds:data
-sort    proc uses esi dx di cx bx
+sort    proc uses esi dx di cx bx bp
 ; algorithm: bubble sort with no help
 ; stable algorithm
         
-        lea si, sorv        ; init
-        lea dx, [si + N]   ; destination
+        lea si, sorv    ; init
+        mov dx, si      ; destination
+        add dx, N
+        add dx, N
         
 loop1:   
-        mov bx, [si]    ; load ptr
-        mov ax, 14[bx]  ; load first num
+        mov bp, [si]    ; load ptr
+        mov al, ds:13[bp]  ; load first num
         
         lea di, 2[si]   ; di = si + 2
 loop2:  
         mov bx, [di]
-        cmp ax, 14[bx]  
+        cmp al, 13[bx]
         jge endif1
-        xchg bx, [di]   ; swap largest ptr to bx 
-        mov ax, 14[bx]  ; load num in pointed by bx
+        xchg bp, [di]   ; swap largest ptr to bp 
+        mov al, ds:13[bp]  ; load num in pointed by bx
 endif1:    
         add di, 2
         cmp di, dx
         jne loop2
 
-        mov [si], bx    ; push local largest ptr to local top
+        mov [si], bp    ; push local largest ptr to local top
         add si, 2       
-        cmp si, dx
+        lea ax, [si+2]
+        cmp ax, dx
         jne loop1
 
-
         mov esi, 0
-        mov ax, -1
+        mov al, -1
 loop3:
         mov bx, sorv[esi*2]
-        cmp ax, [bx]
+        cmp al, 13[bx]
         je endif2
         lea cx, 1[si]
+        mov al, 13[bx]
 endif2: 
-        mov word ptr[bx], cx
+        mov 14[bx], cx
+        inc esi
         cmp esi, N
         jne loop3
 

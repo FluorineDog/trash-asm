@@ -39,7 +39,7 @@ stack   segment use16 stack
         db 200 dup (?)
 stack   ends
 
-code    segment public use16 'code'
+code    segment use16 para public 'code'
                 assume cs:code, ds:data, ss:stack, es:data
 start:  
         mov ax, data
@@ -47,7 +47,7 @@ start:
         mov es, ax
         mov di, offset info
 
-        call inputer 
+        ; call inputer 
 prep:   
         mov si, N
         lea di, info
@@ -63,7 +63,7 @@ lint:
         add di, 2
         cmp di, offset sorv + 2*N
         jne lint
-        ; call sort
+        call sort
         ; pop di
         ; pop si
 
