@@ -1,5 +1,5 @@
-        name    e0
-        extrn   userinp:near, calcmean:near, sort:near, print:near
+        name    final
+        extrn   userinp:near, calcmean:near, sort:near, print:far
         public  N, sorv, info
 .386
 N equ 5

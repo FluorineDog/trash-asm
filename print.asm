@@ -18,7 +18,7 @@ include basis.inc
 
 
 
-code	segment use16 public para 'code' 
+code	segment use16 para  
 	    assume cs:code, ss:stack, ds:data
 itos	proc uses dx bx cx di
         mov dx,di
@@ -58,7 +58,7 @@ itosDone:
 	ret
 itos	endp
 
-print	proc uses es bx bp cx si di
+print	proc far uses es bx bp cx si di
 	mov ax, ds
 	mov es, ax
 	puts msg1
