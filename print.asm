@@ -107,8 +107,10 @@ loop1:
 	call itos	
 	prints outbuf
 	clrf
-	prints msg1
-	clrf
+	test bp, 1
+	je skipLn
+	puts msg1
+skipLn:
 	add bx, 16
 	dec bp
 	jnz loop1
