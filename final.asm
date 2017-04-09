@@ -1,8 +1,8 @@
         name    e0
-        extrn   inputer:far, calcavg:far, sort:near, print:near
+        extrn   userinp:near, calcmean:near, sort:near, print:near
         public  N, sorv, info
 .386
-N equ 10
+N equ 5
 data    segment use16 public 'dat'
 info    db  "why", 7 dup(0), 100, 85, 80, ?
         dw  ?
@@ -14,13 +14,13 @@ info    db  "why", 7 dup(0), 100, 85, 80, ?
         dw  ?
         db  "good",6 dup(0), 76, 85, 80, ?
         dw  ?
-        db  "at",  8 dup(0), 77, 60, 80, ?
-        dw  ?
-        db  "this",6 dup(0), 60, 85, 80, ?
-        dw  ?
-        db  N-8 dup("null",6 dup(0), 77, 85, 80, ?, ?, ?)
-        db  "gouguilin",1 dup(0), 100, 85, 80, ?
-        dw  ?
+        ; db  "at",  8 dup(0), 77, 60, 80, ?
+        ; dw  ?
+        ; db  "this",6 dup(0), 60, 85, 80, ?
+        ; dw  ?
+        ; db  N-8 dup("null",6 dup(0), 77, 85, 80, ?, ?, ?)
+        ; db  "gouguilin",1 dup(0), 100, 85, 80, ?
+        ; dw  ?
 sorv    dw  10 dup(0)
 guard   db  10,?
 in_name db  10 dup (0)
@@ -40,16 +40,18 @@ msg4    db 'Option 1: Enter data            Option 2: Calculate averages'
         db '                       Option 5: Exit'
         db 0dh, 0ah
         db '$'
+msg5    db 'done$'
 data    ends
 include basis.inc
 
-stack   segment use16 stack
+stack   segment para use16 stack
         db 200 dup (?)
 stack   ends
 
 code    segment use16 para public 'code'
                 assume cs:code, ds:data, ss:stack, es:data
 start:  
+        flush
         mov ax, data
         mov ds, ax   
         mov es, ax
@@ -73,21 +75,26 @@ prep:
         lea di, info
         mov si, N
         movzx bx, byte ptr inOptn
+        flush
         sub bx, '1'
         sal bx, 3
         lea bx, jmpTable[bx]
         jmp bx
 jmpTable:
-        call inputer
-        jmp prep
+        call userinp
+        jmp ready
+        nop
+        nop
         nop
         
-        call calcavg
-        jmp prep
+        call calcmean
+        jmp ready
+        nop
+        nop
         nop
 
         call sort
-        jmp prep
+        jmp ready
         nop
         nop
         nop
@@ -106,7 +113,10 @@ jmpTable:
         nop
         nop
         nop
-
+ready:
+        puts msg5
+        clrf
+        jmp prep
         ; push si
         ; push di
        ; call print

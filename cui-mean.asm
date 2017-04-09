@@ -3,10 +3,10 @@ stu_rec struct
     stu_scov db 4 dup(0)
     stu_rank dw 0
 stu_rec ends
-extrn recs:stu_rec
+extrn info:stu_rec
 public calcmean
 .386
-stack segment use16 para stack 'stack'
+stack segment use16 para stack 
     db 200 dup(0)
 stack ends
 n equ 5
@@ -14,7 +14,7 @@ code segment use16 para public 'code'
 calcmean proc
         push dx
         push esi
-        lea ebx,recs
+        lea ebx,info
         mov ecx,0
 lop:    cmp ecx,2*n
         je fin

@@ -1,16 +1,16 @@
 ;User input module
 ;By Shaobo Cui
 ;In cooperation with Guilin Gou
-stu_rec struct
-    stu_name db 10 dup(0)
-    stu_scov db 4 dup(0)
-    stu_rank dw 0
-stu_rec ends
-extrn recs:stu_rec
+; stu_rec struct
+;     stu_name db 10 dup(0)
+;     stu_scov db 4 dup(0)
+;     stu_rank dw 0
+; stu_rec ends
+extrn info:byte;stu_rec
 public userinp
 .386
 include macros.lib
-stack segment use16 para stack 'stack'
+stack segment use16 para stack
     db 200 dup(0)
 stack ends
 
@@ -172,10 +172,10 @@ wriit4:   mov 12[ebx+8*ecx],al
           ret
 getrec endp
 
-userinp proc
+userinp  proc
           push ebx
           mov ecx,1
-          lea ebx,recs
+          lea ebx,info
 rein:     cmp cl,n
           jg fin
           newline

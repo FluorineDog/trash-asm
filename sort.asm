@@ -1,7 +1,7 @@
     extrn sorv:word, N:abs 
     public sort
 .386
-stack segment para use16 public 'stack'
+stack segment use16 stack
     db 200 dup(0)
 stack ends
 

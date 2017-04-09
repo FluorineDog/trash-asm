@@ -1,7 +1,7 @@
 	extrn info:byte, N:abs 
 	public print
 .386
-stack	segment para use16 public 'stack'
+stack	segment para use16 stack
         db 200 dup(0)
 stack	ends
 

@@ -45,3 +45,10 @@ scanfs_ macro guard_
         pop dx
         pop ax
         endm 
+
+flush   macro
+        push ax
+        mov ax, 3
+        int 10h
+        pop ax
+        endm
