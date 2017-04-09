@@ -61,10 +61,13 @@ prep:
         lea di, info
         call calcavg
         scanfs_ inGuard
-        mov di, info
-        mov si, info
-        mov bp 
-        
+        lea di, info
+        mov si, N
+        movzx bx, byte ptr inOptn
+        sub bx, '1'
+        sal bx, 3
+        lea bx, jmpTable[bx]
+        jmp bx
 jmpTable:
         call inputer
         jmp prep
