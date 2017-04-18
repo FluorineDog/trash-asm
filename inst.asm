@@ -2,7 +2,7 @@
 stack   segment stack
         dw 200 dup(?)
 stack   ends 
-
+include basis.inc
 code    segment use16
                 assume cs:code, ss:stack
 start:
@@ -50,7 +50,7 @@ second  proc far
         cmp bl, 26
         ja done
         sub al, ('a'-'A')
-        
+        putchar 07h
 done:
         pop bx
         iret
