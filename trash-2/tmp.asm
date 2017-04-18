@@ -9,77 +9,96 @@
 INCLUDELIB MSVCRT
 INCLUDELIB OLDNAMES
 
+_DATA	SEGMENT
+$SG6223	DB	'%s%d%d%d', 00H
+_DATA	ENDS
 PUBLIC	___local_stdio_scanf_options
+PUBLIC	__vfscanf_l
 PUBLIC	_scanf
 PUBLIC	_getrec
-PUBLIC	??_C@_08HPNNALDB@?$CFs?$CFd?$CFd?$CFd?$AA@	; `string'
 EXTRN	__imp____acrt_iob_func:PROC
 EXTRN	__imp____stdio_common_vfscanf:PROC
 EXTRN	_info:BYTE
 _DATA	SEGMENT
 COMM	?_OptionsStorage@?1??__local_stdio_scanf_options@@9@9:QWORD							; `__local_stdio_scanf_options'::`2'::_OptionsStorage
 _DATA	ENDS
-;	COMDAT ??_C@_08HPNNALDB@?$CFs?$CFd?$CFd?$CFd?$AA@
-CONST	SEGMENT
-??_C@_08HPNNALDB@?$CFs?$CFd?$CFd?$CFd?$AA@ DB '%s%d%d%d', 00H ; `string'
-CONST	ENDS
-; Function compile flags: /Ogtp
+; Function compile flags: /Odtp
 ; File c:\users\57626\documents\visual studio 2017\projects\asmtry\exp\getrec.c
 ;	COMDAT _getrec
 _TEXT	SEGMENT
-_c$1 = -12						; size = 4
-_b$2 = -8						; size = 4
-_a$3 = -4						; size = 4
+_c$1 = -16						; size = 4
+_b$2 = -12						; size = 4
+_a$3 = -8						; size = 4
+_i$4 = -4						; size = 4
 _getrec	PROC						; COMDAT
 
 ; 2    : void getrec() {
 
 	push	ebp
 	mov	ebp, esp
-	sub	esp, 12					; 0000000cH
-	push	esi
+	sub	esp, 16					; 00000010H
 
 ; 3    : 	for (int i = 0; i < N; ++i) {
 
-	mov	esi, OFFSET _info+10
-	npad	4
-$LL4@getrec:
+	mov	DWORD PTR _i$4[ebp], 0
+	jmp	SHORT $LN4@getrec
+$LN2@getrec:
+	mov	eax, DWORD PTR _i$4[ebp]
+	add	eax, 1
+	mov	DWORD PTR _i$4[ebp], eax
+$LN4@getrec:
+	cmp	DWORD PTR _i$4[ebp], 2
+	jge	SHORT $LN1@getrec
 
 ; 4    : 		int a, b, c;
 ; 5    : 		scanf("%s%d%d%d", info[i].name, &a, &b, &c);
 
-	lea	eax, DWORD PTR _c$1[ebp]
-	push	eax
-	lea	eax, DWORD PTR _b$2[ebp]
-	push	eax
+	lea	ecx, DWORD PTR _c$1[ebp]
+	push	ecx
+	lea	edx, DWORD PTR _b$2[ebp]
+	push	edx
 	lea	eax, DWORD PTR _a$3[ebp]
 	push	eax
-	lea	eax, DWORD PTR [esi-10]
-	push	eax
-	push	OFFSET ??_C@_08HPNNALDB@?$CFs?$CFd?$CFd?$CFd?$AA@
+	mov	ecx, DWORD PTR _i$4[ebp]
+	shl	ecx, 4
+	add	ecx, OFFSET _info
+	push	ecx
+	push	OFFSET $SG6223
 	call	_scanf
+	add	esp, 20					; 00000014H
 
 ; 6    : 		info[i].grade[0] = (char)a;
 
-	movzx	eax, BYTE PTR _a$3[ebp]
-	add	esp, 20					; 00000014H
-	mov	BYTE PTR [esi], al
+	mov	edx, DWORD PTR _i$4[ebp]
+	shl	edx, 4
+	mov	eax, 1
+	imul	ecx, eax, 0
+	mov	al, BYTE PTR _a$3[ebp]
+	mov	BYTE PTR _info[edx+ecx+10], al
 
 ; 7    : 		info[i].grade[1] = (char)b;
 
-	movzx	eax, BYTE PTR _b$2[ebp]
-	mov	BYTE PTR [esi+1], al
+	mov	ecx, DWORD PTR _i$4[ebp]
+	shl	ecx, 4
+	mov	edx, 1
+	shl	edx, 0
+	mov	al, BYTE PTR _b$2[ebp]
+	mov	BYTE PTR _info[ecx+edx+10], al
 
 ; 8    : 		info[i].grade[2] = (char)c;
 
-	movzx	eax, BYTE PTR _c$1[ebp]
-	mov	BYTE PTR [esi+2], al
-	add	esi, 16					; 00000010H
-	cmp	esi, OFFSET _info+42
-	jl	SHORT $LL4@getrec
-	pop	esi
+	mov	ecx, DWORD PTR _i$4[ebp]
+	shl	ecx, 4
+	mov	edx, 1
+	shl	edx, 1
+	mov	al, BYTE PTR _c$1[ebp]
+	mov	BYTE PTR _info[ecx+edx+10], al
 
 ; 9    : 	}	
+
+	jmp	SHORT $LN2@getrec
+$LN1@getrec:
+
 ; 10   : }
 
 	mov	esp, ebp
@@ -87,10 +106,12 @@ $LL4@getrec:
 	ret	0
 _getrec	ENDP
 _TEXT	ENDS
-; Function compile flags: /Ogtp
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h
 ;	COMDAT _scanf
 _TEXT	SEGMENT
+__Result$ = -8						; size = 4
+__ArgList$ = -4						; size = 4
 __Format$ = 8						; size = 4
 _scanf	PROC						; COMDAT
 
@@ -98,41 +119,46 @@ _scanf	PROC						; COMDAT
 
 	push	ebp
 	mov	ebp, esp
-	push	esi
+	sub	esp, 8
 
 ; 1276 :         int _Result;
 ; 1277 :         va_list _ArgList;
 ; 1278 :         __crt_va_start(_ArgList, _Format);
+
+	lea	eax, DWORD PTR __Format$[ebp+4]
+	mov	DWORD PTR __ArgList$[ebp], eax
+
 ; 1279 :         _Result = _vfscanf_l(stdin, _Format, NULL, _ArgList);
 
-	mov	esi, DWORD PTR __Format$[ebp]
+	mov	ecx, DWORD PTR __ArgList$[ebp]
+	push	ecx
+	push	0
+	mov	edx, DWORD PTR __Format$[ebp]
+	push	edx
 	push	0
 	call	DWORD PTR __imp____acrt_iob_func
 	add	esp, 4
-
-; 1058 :         return __stdio_common_vfscanf(
-
-	lea	ecx, DWORD PTR __Format$[ebp+4]
-	push	ecx
-	push	0
-	push	esi
 	push	eax
-	call	___local_stdio_scanf_options
-	push	DWORD PTR [eax+4]
-	push	DWORD PTR [eax]
-	call	DWORD PTR __imp____stdio_common_vfscanf
-	add	esp, 24					; 00000018H
-	pop	esi
+	call	__vfscanf_l
+	add	esp, 16					; 00000010H
+	mov	DWORD PTR __Result$[ebp], eax
 
 ; 1280 :         __crt_va_end(_ArgList);
+
+	mov	DWORD PTR __ArgList$[ebp], 0
+
 ; 1281 :         return _Result;
+
+	mov	eax, DWORD PTR __Result$[ebp]
+
 ; 1282 :     }
 
+	mov	esp, ebp
 	pop	ebp
 	ret	0
 _scanf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Ogtp
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h
 ;	COMDAT __vfscanf_l
 _TEXT	SEGMENT
@@ -149,13 +175,19 @@ __vfscanf_l PROC					; COMDAT
 
 ; 1058 :         return __stdio_common_vfscanf(
 
-	push	DWORD PTR __ArgList$[ebp]
-	push	DWORD PTR __Locale$[ebp]
-	push	DWORD PTR __Format$[ebp]
-	push	DWORD PTR __Stream$[ebp]
+	mov	eax, DWORD PTR __ArgList$[ebp]
+	push	eax
+	mov	ecx, DWORD PTR __Locale$[ebp]
+	push	ecx
+	mov	edx, DWORD PTR __Format$[ebp]
+	push	edx
+	mov	eax, DWORD PTR __Stream$[ebp]
+	push	eax
 	call	___local_stdio_scanf_options
-	push	DWORD PTR [eax+4]
-	push	DWORD PTR [eax]
+	mov	ecx, DWORD PTR [eax+4]
+	push	ecx
+	mov	edx, DWORD PTR [eax]
+	push	edx
 	call	DWORD PTR __imp____stdio_common_vfscanf
 	add	esp, 24					; 00000018H
 
@@ -167,11 +199,16 @@ __vfscanf_l PROC					; COMDAT
 	ret	0
 __vfscanf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Ogtp
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT ___local_stdio_scanf_options
 _TEXT	SEGMENT
 ___local_stdio_scanf_options PROC			; COMDAT
+
+; 94   :     {
+
+	push	ebp
+	mov	ebp, esp
 
 ; 95   :         static unsigned __int64 _OptionsStorage;
 ; 96   :         return &_OptionsStorage;
@@ -180,7 +217,8 @@ ___local_stdio_scanf_options PROC			; COMDAT
 
 ; 97   :     }
 
+	pop	ebp
 	ret	0
 ___local_stdio_scanf_options ENDP
 _TEXT	ENDS
-END
+E
