@@ -36,7 +36,7 @@ second  proc far
 
         pushf
         mov bx, sp
-        and word ptr ss:[bx], 0CEEFh
+        and word ptr ss:[bp], 0FCFFh
         popf
 
         call dword ptr backup

@@ -22,7 +22,7 @@ uninst  proc
         mov eax, es:[bx-4]
         xor eax, 0CCCCh
         jne p404
-
+        
         push ds
         mov dx, es:[bx-8]
         mov ax, es:[bx-6]
