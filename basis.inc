@@ -23,7 +23,7 @@ putchar macro charactor_
 prints  macro message_
         push ax
         push dx
-        mov dx, offset message_
+        lea dx, message_
         mov ah, 09h
         int 21h
         pop dx

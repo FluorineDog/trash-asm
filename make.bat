@@ -3,4 +3,5 @@ REM ml lab3.asm new.asm
 REM ml cmos.asm
 REM ml uninst.asm
 REM ml inst.asm
-ml trash.asm
+REM ml trash.asm
+ml secret.asm
