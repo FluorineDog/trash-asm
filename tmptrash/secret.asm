@@ -9,8 +9,8 @@ info    db 49, 29, 26, 75, 202, 84, 200, 111, 7, 0, 108, 174, 234, 69, 55, 103, 
 final   dd 647622310
 guard   db 5, ?
 inbuf   db 5 dup (?)
-info1   db "Enter password:$"
-info2   db "Incorrect$"
+info1   db "enter password:$"
+info2   db "incorrect$"
 data    ends
 
 

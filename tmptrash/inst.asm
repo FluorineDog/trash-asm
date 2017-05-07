@@ -39,9 +39,11 @@ second  proc far
         and word ptr ss:[bp], 0FCFFh
         popf
 
-        call dword ptr backup
-
-
+        ; call dword ptr backup
+        push seg NEWP
+        push offset NEWP
+        jmp backup
+NEWP:
         pop bx
         test bh, 0EFh   ; if 10h or 00h
         jne done

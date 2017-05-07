@@ -30,7 +30,7 @@ cmos    proc
         shr al, 4
         add al, '0'
         mov outp, al
-        puts outp
+        prints outp
         mov ax, 4c00h
         int 21h
 cmos    endp
